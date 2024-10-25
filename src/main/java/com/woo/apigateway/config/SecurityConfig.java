@@ -3,6 +3,7 @@ package com.woo.apigateway.config;
 import com.woo.apigateway.oauth.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +28,9 @@ public class SecurityConfig {
     private final OAuthFailureHandler oAuthFailureHandler;
     private final OAuthLogoutHandler oAuthLogoutHandler;
 
+    @Value("${redirect-front-url}")
+    private String redirectUrl;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationRequestResolver defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
@@ -45,7 +49,7 @@ public class SecurityConfig {
                         .authorizationEndpoint(c -> c.authorizationRequestResolver(new OAuthRequestResolver(defaultResolver, httpSession)))
                         .successHandler(oAuthSuccessHandler)
                         .failureHandler(oAuthFailureHandler))
-                .logout(logout -> logout.addLogoutHandler(oAuthLogoutHandler).logoutSuccessUrl("http://localhost:3000").invalidateHttpSession(true));
+                .logout(logout -> logout.addLogoutHandler(oAuthLogoutHandler).logoutSuccessUrl(redirectUrl).invalidateHttpSession(true));
         return http.build();
     }
 
