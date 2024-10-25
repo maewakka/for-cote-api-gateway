@@ -1,6 +1,7 @@
 package com.woo.apigateway.dto.steps;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data

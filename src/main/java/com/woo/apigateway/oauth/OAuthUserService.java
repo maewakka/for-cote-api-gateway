@@ -26,8 +26,6 @@ public class OAuthUserService extends DefaultOAuth2UserService {
 
         GithubOAuthAttributeDto githubOAuthAttributeDto = GithubOAuthAttributeDto.of(oAuth2User.getAttributes());
         User user = saveOrLoadUser(githubOAuthAttributeDto);
-        log.info("User : {}", user);
-
         httpSession.setAttribute("user", user);
 
         return oAuth2User;

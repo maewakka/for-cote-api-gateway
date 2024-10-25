@@ -1,7 +1,6 @@
 package com.woo.apigateway.config;
 
-import com.woo.apigateway.oauth.OAuthRequestResolver;
-import com.woo.apigateway.oauth.OAuthUserService;
+import com.woo.apigateway.oauth.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
@@ -23,6 +23,9 @@ public class SecurityConfig {
     private final OAuthUserService oAuthUserService;
     private final HttpSession httpSession;
     private final ClientRegistrationRepository clientRegistrationRepository;
+    private final OAuthSuccessHandler oAuthSuccessHandler;
+    private final OAuthFailureHandler oAuthFailureHandler;
+    private final OAuthLogoutHandler oAuthLogoutHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,12 +36,16 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().none())
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth -> oauth
                         .userInfoEndpoint(c -> c.userService(oAuthUserService))
-                        .authorizationEndpoint(c -> c.authorizationRequestResolver(new OAuthRequestResolver(defaultResolver, httpSession))));
+                        .authorizationEndpoint(c -> c.authorizationRequestResolver(new OAuthRequestResolver(defaultResolver, httpSession)))
+                        .successHandler(oAuthSuccessHandler)
+                        .failureHandler(oAuthFailureHandler))
+                .logout(logout -> logout.addLogoutHandler(oAuthLogoutHandler).logoutSuccessUrl("http://localhost:3000").invalidateHttpSession(true));
         return http.build();
     }
 
