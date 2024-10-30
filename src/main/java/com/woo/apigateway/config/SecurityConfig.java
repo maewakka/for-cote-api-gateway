@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().none())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user-detail", "/save", "/code", "/optimize", "optimize-count").authenticated()
+                        .requestMatchers( "/save", "/code", "/optimize", "optimize-count").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth -> oauth
