@@ -22,4 +22,9 @@ public class UserController {
         return userService.getUserDetail(user);
     }
 
+    @GetMapping("/optimize-count")
+    public Long getOptimizeCount(@CurrentUser User user) {
+        return userService.getOptimizeCount(user);
+    }
+
 }

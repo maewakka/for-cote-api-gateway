@@ -1,0 +1,4 @@
+
+exhaust_all_count:
+  status: 404
+  message: 금일 카운터를 모두 소진하였습니다.

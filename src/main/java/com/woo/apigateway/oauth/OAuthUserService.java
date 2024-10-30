@@ -2,6 +2,8 @@ package com.woo.apigateway.oauth;
 
 import com.woo.apigateway.dto.oauth.GithubOAuthAttributeDto;
 import com.woo.apigateway.entity.User;
+import com.woo.apigateway.entity.UserAssistCount;
+import com.woo.apigateway.repository.UserAssistCountRepository;
 import com.woo.apigateway.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class OAuthUserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
     private final HttpSession httpSession;
+    private final UserAssistCountRepository userAssistCountRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -34,6 +37,13 @@ public class OAuthUserService extends DefaultOAuth2UserService {
     private User saveOrLoadUser(GithubOAuthAttributeDto githubOAuthAttributeDto) {
         User savedUser = userRepository.findUserByEmail(githubOAuthAttributeDto.getEmail());
 
-        return savedUser == null ? userRepository.save(githubOAuthAttributeDto.toEntity()) : savedUser;
+        if(savedUser != null) {
+            return savedUser;
+        } else {
+            User user = userRepository.save(githubOAuthAttributeDto.toEntity());
+            userAssistCountRepository.save(new UserAssistCount(user));
+
+            return user;
+        }
     }
 }

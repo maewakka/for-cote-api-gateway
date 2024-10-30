@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.woo.apigateway.oauth.CurrentUserArgumentResolver;
+import com.woo.exception.config.ErrorConfig;
+import com.woo.exception.handler.RestExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,5 +39,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(currentUserArgumentResolver);
+    }
+
+    @Bean
+    public RestExceptionHandler setRestExceptionHandler() throws Exception {
+        ErrorConfig errorConfig = ErrorConfig.build().setResource("/error/exception.yml");
+
+        return RestExceptionHandler.setErrorConfig(errorConfig);
     }
 }
