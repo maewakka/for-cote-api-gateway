@@ -16,7 +16,7 @@ public class UserDto {
 
     public static UserDto of(User user) {
         return UserDto.builder()
-                .email(user.getEmail())
+                .email(user.getLogin())
                 .name(user.getName())
                 .profileImgUrl(user.getProfileImgUrl())
                 .build();

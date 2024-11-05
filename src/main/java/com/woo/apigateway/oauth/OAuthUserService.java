@@ -35,7 +35,7 @@ public class OAuthUserService extends DefaultOAuth2UserService {
     }
 
     private User saveOrLoadUser(GithubOAuthAttributeDto githubOAuthAttributeDto) {
-        User savedUser = userRepository.findUserByEmail(githubOAuthAttributeDto.getEmail());
+        User savedUser = userRepository.findUserById(githubOAuthAttributeDto.getId());
 
         if(savedUser != null) {
             return savedUser;

@@ -25,6 +25,6 @@ public class CodeService {
     }
 
     public String getCode(User user, Long problemId, Language language) {
-        return codeApiClient.getCode(user.getEmail(), problemId, language);
+        return codeApiClient.getCode(user.getLogin(), problemId, language);
     }
 }

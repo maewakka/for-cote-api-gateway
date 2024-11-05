@@ -20,11 +20,10 @@ import java.time.LocalDateTime;
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(unique = true)
-    private String email;
+    private String login;
     private String name;
     private String profileImgUrl;
 
@@ -34,8 +33,9 @@ public class User implements Serializable {
     private LocalDateTime updatedAt;
 
     @Builder
-    public User(String email, String name, String profileImgUrl) {
-        this.email = email;
+    public User(String id, String login, String name, String profileImgUrl) {
+        this.id = id;
+        this.login = login;
         this.name = name;
         this.profileImgUrl = profileImgUrl;
     }
