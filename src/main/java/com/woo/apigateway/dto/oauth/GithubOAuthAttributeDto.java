@@ -20,6 +20,8 @@ public class GithubOAuthAttributeDto {
     private String repoUrl;
 
     public static GithubOAuthAttributeDto of(Map<String, Object> attributes) {
+        log.info("Attribute : {}", attributes);
+
         return GithubOAuthAttributeDto.builder()
                 .id(Optional.ofNullable(attributes.get("id")).map(Object::toString).orElse(""))
                 .login(Optional.ofNullable(attributes.get("login")).map(Object::toString).orElse(""))
