@@ -12,7 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class UserAssistCount {
 
-    private static final Long INITIAL_COUNT = 3L;
+    private static final Long INITIAL_COUNT = 10L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
