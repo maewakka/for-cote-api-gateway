@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Data
 @Slf4j
@@ -20,10 +21,10 @@ public class GithubOAuthAttributeDto {
 
     public static GithubOAuthAttributeDto of(Map<String, Object> attributes) {
         return GithubOAuthAttributeDto.builder()
-                .id(attributes.get("id").toString())
-                .login(attributes.get("login").toString())
-                .name(attributes.get("name").toString())
-                .profileImgUrl(attributes.get("avatar_url").toString())
+                .id(Optional.ofNullable(attributes.get("id")).map(Object::toString).orElse(""))
+                .login(Optional.ofNullable(attributes.get("login")).map(Object::toString).orElse(""))
+                .name(Optional.ofNullable(attributes.get("name")).map(Object::toString).orElse(""))
+                .profileImgUrl(Optional.ofNullable(attributes.get("avatar_url")).map(Object::toString).orElse(""))
                 .build();
     }
 

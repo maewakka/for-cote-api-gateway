@@ -22,7 +22,6 @@ public class User implements Serializable {
     @Id
     private String id;
 
-    @Column(unique = true)
     private String login;
     private String name;
     private String profileImgUrl;
