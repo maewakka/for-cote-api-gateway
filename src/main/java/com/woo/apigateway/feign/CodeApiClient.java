@@ -19,6 +19,6 @@ public interface CodeApiClient {
     String saveCode(@RequestBody CodeReqDto codeReqDto);
 
     @GetMapping("/code")
-    String getCode(@RequestParam("email") String email, @RequestParam("problemId") Long problemId, @RequestParam("language") Language language);
+    String getCode(@RequestParam("id") String id, @RequestParam("problemId") Long problemId, @RequestParam("language") Language language);
 
 }
